@@ -8,25 +8,33 @@ class PlaceSerializer(serializers.ModelSerializer):
         fields='__all__'
 
 
-class TripTypeSerializer(model.ModelSerializer):
+class FavouritePlaceSerializer(serializers.ModelSerializer):
+    place = PlaceSerializer(read_only=True)
+
+    class Meta:
+        model = FavouritePlace
+        fields = ("id", "place", "created_at")
+
+
+class TripTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model=TripType
         fields='__all__'
 
 
-class TransportationSerializer(model.ModelSerializer):
+class TransportationSerializer(serializers.ModelSerializer):
     class Meta:
         model=Transportation
         fields='__all__'
 
 
-class InterestSerializer(model.ModelSerializer):
+class InterestSerializer(serializers.ModelSerializer):
     class Meta:
         model=Interest
         fields='__all__'        
 
 
-class BudgetSerializer(model.ModelSerializer):
+class BudgetSerializer(serializers.ModelSerializer):
     class Meta:
         model=Budget
         fields='__all__'

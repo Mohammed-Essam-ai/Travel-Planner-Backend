@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Transportation(models.Model):
     name = models.CharField(max_length=100,unique=True)
@@ -8,13 +9,11 @@ class Transportation(models.Model):
 
 class Interest(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(unique=True)
     def __str(self):
         return self.name
 
 class Place(models.Model):
     name = models.CharField(max_length=255)
-    is_active = models.BooleanField(default=True)
     country=models.CharField(max_length=255)
     address = models.TextField()
     region=models.CharField(max_length=255)
@@ -26,6 +25,21 @@ class Place(models.Model):
     )
     rating = models.FloatField(default=0)
 
+
+class FavouritePlace(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favourite_places")
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name="favourited_by")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "favourite_places"
+        constraints = [
+            models.UniqueConstraint(fields=["user", "place"], name="unique_user_favourite_place")
+        ]
+
+    def __str__(self):
+        return f"{self.user} - {self.place}"
+
 class Budget(models.Model):
     name = models.CharField(max_length=100,unique=True)
     def __str(self):
@@ -34,18 +48,5 @@ class Budget(models.Model):
 class TripType(models.Model):
     name = models.CharField(max_length=100,unique=True)
     def __str(self):
-        return self.name     
-
-
-
-#                                         attraction
-# attraction_id attraction_name attraction_country(string) attraction_address(string) attraction_region(string)  attraction_city(string)  attraction_continent(string)   attracion_type(foreign_key)  attraction_rating(float)  
-
-#                                         Mode عندى فى الباك التايب  
-# mode_id  mode_name 
-
-#                                       type/interest
-# type_id   type_name                                        
-
-
-                                        
+        return self.name  
+        

@@ -4,6 +4,11 @@ from .models import *
 from .serializers import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import status
+from django.shortcuts import get_object_or_404
+from .models import FavouritePlace
+from .serializers import FavouritePlaceSerializer
 
 
 def get_top_places(request):
@@ -42,3 +47,26 @@ def get_place(request, place_id):
     place = Place.objects.get(id=place_id)
     serializer = PlaceSerializer(place)
     return Response(serializer.data, status=200)
+
+
+@api_view(['GET', 'POST', 'DELETE'])
+def favourite_places(request, place_id=None):
+    if not request.user.is_authenticated:
+        return Response({'detail': 'Authentication credentials were not provided.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+    if request.method == 'GET':
+        favourites = FavouritePlace.objects.filter(user=request.user).select_related('place')
+        return Response(FavouritePlaceSerializer(favourites, many=True).data, status=status.HTTP_200_OK)
+
+    place = get_object_or_404(Place, id=place_id)
+    if request.method == 'POST':
+        favourite, created = FavouritePlace.objects.get_or_create(user=request.user, place=place)
+        return Response(
+            FavouritePlaceSerializer(favourite).data,
+            status=status.HTTP_201_CREATED if created else status.HTTP_200_OK,
+        )
+
+    deleted, _ = FavouritePlace.objects.filter(user=request.user, place=place).delete()
+    if not deleted:
+        return Response({'detail': 'Place is not in favourites.'}, status=status.HTTP_404_NOT_FOUND)
+    return Response(status=status.HTTP_204_NO_CONTENT)
