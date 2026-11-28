@@ -24,15 +24,20 @@ DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-ALLOWED_HOSTS = [
-    "travel-planner-backend.ethiodeploy.app",
-    "localhost",
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = os.environ.get(
+    "ALLOWED_HOSTS",
+    "travel-planner-backend.ethiodeploy.app,localhost,127.0.0.1"
+).split(",")
 
 CSRF_TRUSTED_ORIGINS = [
     "https://travel-planner-backend.ethiodeploy.app",
 ]
+SECURE_SSL_REDIRECT = True
+
+SESSION_COOKIE_SECURE = True
+
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_SECONDS = 31536000
 # Application definition
 
 INSTALLED_APPS = [
@@ -146,8 +151,3 @@ STORAGES = {
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
