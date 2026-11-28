@@ -28,6 +28,9 @@ def get_top_places(request):
     ]
     return JsonResponse(data,safe=False)
 
+def home(request):
+    return HttpResponse("Travel Planner API is running successfully!")
+    
 @api_view(['GET'])
 def get_options():
     transportations=TransportationSerializer(Transportation.objects.all())
