@@ -20,12 +20,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
-DEBUG = True # os.environ.get("DEBUG", "False") == "True"
-
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = [
+    'travel-planner-backend-production-50620c95.up.railway.app',
+    'travel-planner-backend.ethiodeploy.app',
+    'localhost',
+    '127.0.0.1',
+]
+print("DEBUG VALUE:", DEBUG)
+print("ALLOWED HOSTS:", ALLOWED_HOSTS)
+print("SETTINGS FILE:", __file__)
 SECURE_SSL_REDIRECT = True
 
 SESSION_COOKIE_SECURE = True
