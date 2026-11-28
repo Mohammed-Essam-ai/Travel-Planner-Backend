@@ -24,11 +24,8 @@ DEBUG = True # os.environ.get("DEBUG", "False") == "True"
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-ALLOWED_HOSTS = [
-    'travel-planner-backend-production-50620c95.up.railway.app',
-    'localhost',
-    '127.0.0.1',
-]
+ALLOWED_HOSTS = ['*']
+
 SECURE_SSL_REDIRECT = True
 
 SESSION_COOKIE_SECURE = True
