@@ -9,7 +9,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from .models import FavouritePlace
 from .serializers import FavouritePlaceSerializer
-
+from django.http import HttpResponse
 
 def get_top_places(request):
     data=[
@@ -30,7 +30,7 @@ def get_top_places(request):
 
 def home(request):
     return HttpResponse("Travel Planner API is running successfully!")
-    
+
 @api_view(['GET'])
 def get_options():
     transportations=TransportationSerializer(Transportation.objects.all())
