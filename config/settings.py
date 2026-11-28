@@ -21,11 +21,16 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = os.environ.get(
-    "ALLOWED_HOSTS",
-    "localhost,127.0.0.1"
-).split(",")
 
+ALLOWED_HOSTS = [
+    "travel-planner-backend.ethiodeploy.app",
+    "localhost",
+    "127.0.0.1",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://travel-planner-backend.ethiodeploy.app",
+]
 # Application definition
 
 INSTALLED_APPS = [
